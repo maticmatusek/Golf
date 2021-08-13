@@ -1,0 +1,22 @@
+<html>
+    <body>
+        <table>
+            % for i in range(1,101):
+            <tr>
+                % for j in range(1,101):
+                <td>
+                    % for x in slovar:
+                    % x_koord , y_koord = slovar[x]
+                    %   if x_koord == i and y_koord == j :
+                     x
+                    % else:
+                     ||
+                    % end
+                    % end
+                </td>
+                % end
+            </tr>
+            % end
+        </table>
+    </body>
+</html>

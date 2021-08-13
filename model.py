@@ -3,8 +3,8 @@ import math
 
 #Ugotovi kaj in kako boš, če sta na istem mestu igralca
 #ugotovi kaj se zgodi, če gre igralec izven polja
-#slovar je oblike {0: ['ime', (x, y)]}
-#mislim, da bi moralo do sedaj vse delovati, kot se spodobi
+#slovar je oblike {0: ['ime', (x, y),stevilo_udarcev]}
+#NI V REDU POGLEJ POD  METODO UDAREC
 
 
 class Igra:
@@ -19,37 +19,51 @@ class Igra:
 
 
     def __str__(self):
-        return f"Pozicija luknje je {self.pozicija_luknje}, igralec, ki je na vrsti je igralec številka {self.igralec_na_vrsti}, začetne koordinate so {self.koordinate_zacetka}, igralci so {self.igralci}"
+        return f"Pozicija luknje je:{self.pozicija_luknje} \n Igralec, ki je na vrsti je igralec: {self.igralci[self.igralec_na_vrsti][0]}\n Številka: {self.igralec_na_vrsti}\n Runda : {self.runda} \n Začetne koordinate so {self.koordinate_zacetka}\n Igralci so {self.igralci}"
 
     def dodaj_igralca(self, ime_igralca):
+        stevilo_udarcev = 0
         stevilka_igralca = len(self.igralci)
         koordinata_x, koordinata_y = self.koordinate_zacetka
-        self.igralci[stevilka_igralca] = [ime_igralca, (koordinata_x, koordinata_y)]
+        self.igralci[stevilka_igralca] = [ime_igralca, (koordinata_x, koordinata_y), stevilo_udarcev]
         #doda igralca med množico igralcev in jih oštevilči od skupaj z 0 naprej
 
     def udarec(self, moc, kot):
-        if self.igralec_na_vrsti == min(self.igralci.keys()):
-            self.runda = self.runda + 1
-        #vsakič ko je krog okoli prišteje eno rundo
+        if moc > 100 or moc < 0 :
+            return "Moč je vrednost med 0 in 100"
+        self.nova_runda()
         premik_x, premik_y = izracun_premika(moc, kot)
         trenuten_x, trenuten_y = self.igralci[self.igralec_na_vrsti][1]
         novi_x = trenuten_x + premik_x
         novi_y = trenuten_y - premik_y
-        self.igralci[self.igralec_na_vrsti][1] = (novi_x, novi_y)
-        #izračuna nove koordinate glede na funkcijo izracunaj_premik
+        self.igralci[self.igralec_na_vrsti][2] = self.igralci[self.igralec_na_vrsti][2] + 1
+        nove_koordinate = self.preveri_isto_mesto(novi_x, novi_y)
+        posodobljen_x, posodobljen_y = nove_koordinate
+        if preveri_udarec(posodobljen_x, posodobljen_y):
+            self.igralci[self.igralec_na_vrsti][1] = (posodobljen_x, posodobljen_y)
+
+            self.naslednji_igralec()
+            self.igralec_koncal() 
+        else:
+            self.naslednji_igralec()
+            self.igralec_koncal() 
+            return "Žogica je odletela izven meja"
+
+
+    def naslednji_igralec(self):
         if self.igralec_na_vrsti < max(self.igralci.keys()):
             self.igralec_na_vrsti = self.igralec_na_vrsti + 1
             while self.igralec_na_vrsti not in self.igralci.keys():
                 self.igralec_na_vrsti = self.igralec_na_vrsti + 1
         elif self.igralec_na_vrsti == max(self.igralci.keys()):
             self.igralec_na_vrsti = min(self.igralci.keys())
-        #spremeni igralca,ki je na vrsti
-        self.igralec_koncal()    
-        #preveri, če je igralec končal
-        ########POPRAVI,DA NI TOK VELIK V ENI FUNKCIJI !!!!!!!!!!!!!
 
-
-
+    def nova_runda(self):
+        mnozica = set()
+        for i in self.igralci:
+            mnozica.add(self.igralci[i][2])
+        self.runda = min(mnozica) + 1
+        #ko imajo vsi igralci isto število udarcev, se runda zamenja
         
     def igralec_koncal(self):
         for i in self.igralci.keys():
@@ -63,16 +77,94 @@ class Igra:
         #preveri, če je igralec končal in ga vrže ven iz igre,
         #ter ga doda na seznam igralcev, ki so končali skupaj s številom rund
 
+    def preveri_isto_mesto(self,novi_x, novi_y):
+        mnozica = set()
+        nove_koordinate = novi_x, novi_y
+        nove_koordinate1 = novi_x, novi_y + 1
+        nove_koordinate2 = novi_x, novi_y - 1
+        nove_koordinate3 = novi_x + 1, novi_y
+        nove_koordinate4 = novi_x -1, novi_y
+        nove_koordinate5 = novi_x + 1, novi_y + 1
+        nove_koordinate6 = novi_x - 1, novi_y + 1
+        nove_koordinate7 = novi_x + 1, novi_y - 1
+        nove_koordinate8 = novi_x - 1, novi_y - 1
+        for i in self.igralci.keys():
+            mnozica.add(self.igralci[i][1])
+        if nove_koordinate not in mnozica:
+            return nove_koordinate
+        elif nove_koordinate1 not in mnozica:
+            return nove_koordinate1
+        elif nove_koordinate2 not in mnozica:
+            return nove_koordinate2
+        elif nove_koordinate3 not in mnozica:
+            return nove_koordinate3
+        elif nove_koordinate4 not in mnozica:
+            return nove_koordinate4
+        elif nove_koordinate5 not in mnozica:
+            return nove_koordinate5
+        elif nove_koordinate6 not in mnozica:
+            return nove_koordinate6
+        elif nove_koordinate7 not in mnozica:
+            return nove_koordinate7
+        elif nove_koordinate8 not in mnozica:
+            return nove_koordinate8
+        
+
+
+def preveri_udarec(novi_x,novi_y):
+    if novi_x > 100 or novi_y > 100 or novi_x < 0 or novi_y < 0 :
+        return False
+    else:
+        return True
 
 
 
 
-def nova_igra():
-    x_koordinata_luknje = random.randint(6, 10)
-    y_koordinata_luknje = random.randint(1, 4)
-    x_koordinata_zacetka = random.randint(1, 4)
-    y_koordinata_zacetka = random.randint(6, 10)
-    return Igra((x_koordinata_luknje, y_koordinata_luknje), 0, (x_koordinata_zacetka, y_koordinata_zacetka))
+def nova_igra(igra = random.randint(1,5)):
+    if igra == 1:
+        x_koordinata_luknje = random.randint(60, 100)
+        y_koordinata_luknje = random.randint(1, 40)
+        x_koordinata_zacetka = random.randint(1, 40)
+        y_koordinata_zacetka = random.randint(60, 100)
+        return Igra((x_koordinata_luknje, y_koordinata_luknje), 0, (x_koordinata_zacetka, y_koordinata_zacetka))
+    if igra == 2:
+        x_koordinata_zacetka = random.randint(60, 100)
+        y_koordinata_zacetka = random.randint(1, 40)
+        x_koordinata_luknje = random.randint(1, 40)
+        y_koordinata_luknje = random.randint(60, 100)
+        return Igra((x_koordinata_luknje, y_koordinata_luknje), 0, (x_koordinata_zacetka, y_koordinata_zacetka))
+    if igra == 3:
+        x_koordinata_luknje = random.randint(1, 40)
+        y_koordinata_luknje = random.randint(1, 40)
+        x_koordinata_zacetka = random.randint(60, 100)
+        y_koordinata_zacetka = random.randint(60, 100)
+        return Igra((x_koordinata_luknje, y_koordinata_luknje), 0, (x_koordinata_zacetka, y_koordinata_zacetka))
+    if igra == 4 :
+        x_koordinata_luknje = random.randint(60, 100)
+        y_koordinata_luknje = random.randint(60, 100)
+        x_koordinata_zacetka = random.randint(1, 40)
+        y_koordinata_zacetka = random.randint(1, 40)
+        return Igra((x_koordinata_luknje, y_koordinata_luknje), 0, (x_koordinata_zacetka, y_koordinata_zacetka))
+    if igra == 5 :
+        pod_igra = random.randint(1,4)
+        x_koordinata_luknje = random.randint(35, 65)
+        y_koordinata_luknje = random.randint(35, 65)
+        if pod_igra == 1 :
+            x_koordinata_zacetka = random.randint(1, 100)
+            y_koordinata_zacetka = random.randint(1, 20)
+            return Igra((x_koordinata_luknje, y_koordinata_luknje), 0, (x_koordinata_zacetka, y_koordinata_zacetka))
+        if pod_igra == 2 :
+            x_koordinata_zacetka = random.randint(1, 100)
+            y_koordinata_zacetka = random.randint(80, 100)
+            return Igra((x_koordinata_luknje, y_koordinata_luknje), 0, (x_koordinata_zacetka, y_koordinata_zacetka))
+        if pod_igra == 3 :
+            x_koordinata_zacetka = random.randint(1, 20)
+            y_koordinata_zacetka = random.randint(1, 100)
+            return Igra((x_koordinata_luknje, y_koordinata_luknje), 0, (x_koordinata_zacetka, y_koordinata_zacetka))
+        if pod_igra == 4 :
+            x_koordinata_zacetka = random.randint(80, 100)
+            y_koordinata_zacetka = random.randint(1, 100)
+            return Igra((x_koordinata_luknje, y_koordinata_luknje), 0, (x_koordinata_zacetka, y_koordinata_zacetka))
     #naredi novo igro brez igralcev, igralce je treba dodati z metodo .dodaj_igralca,
     #vsem se na začetku priredi enaka pozicija
 
@@ -85,19 +177,20 @@ def izracun_premika(moc, kot):
     #pozor y os je pozitivna navzdol, zato se v metodi, udarec y odšteje
 
 
-I = nova_igra()
-I.dodaj_igralca("Matic")
+#I = nova_igra()
+#I.dodaj_igralca("Matic")
 #I.dodaj_igralca("Iza")
 #I.dodaj_igralca("Maja")
 #I.dodaj_igralca("Martin")
 #I.dodaj_igralca("Seba")
 #I.dodaj_igralca("Nina")
-print(I)
+#print(I)
+
 #I.udarec(1,0)
-#udarec(10,45)
-#udarec(10,90)
-#udarec(10,135)
-#udarec(10,180)
-#udarec(10,225)
-#udarec(10,270)
-#udarec(10,315)
+#I.udarec(10,45)
+#I.udarec(10,90)
+#I.udarec(10,135)
+#I.udarec(10,180)
+#I.udarec(10,225)
+#I.udarec(10,270)
+#I.udarec(10,315)
