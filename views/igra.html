@@ -1,4 +1,36 @@
 <html>
+    <head>
+        <style>
+        table {
+          border: 1px solid black;
+          border-collapse: collapse;
+          width: 700px;
+          height: 700px ;
+          table-layout: fixed;
+
+          float: left;
+            text-size-adjust: inherit ;
+        }
+        td {
+            border: 1px solid black;
+            width: 7px;
+            height: 7px;
+            size: 7px;
+            max-width: 7px;
+            max-height: 7px;
+            background-image: url("img/trava.jpg");
+        }
+        form {
+            float: right;
+        }
+
+        text{
+            max-height: 6px;
+            max-width: 6px;
+        }
+
+        </style>
+    </head>
     <body>
         <table>
             % for i in range(1,101):
@@ -6,11 +38,11 @@
                 % for j in range(1,101):
                 <td>
                     % for x in slovar:
-                    % x_koord , y_koord = slovar[x]
-                    %   if x_koord == i and y_koord == j :
-                     x
-                    % else:
-                     ||
+                    % x_koord , y_koord = slovar[x][1]
+                    %   if x_koord == j and y_koord == i :
+                     o
+                    % elif j == x_koordinata_luknje and i == y_koordinata_luknje:
+                     @
                     % end
                     % end
                 </td>
@@ -18,5 +50,21 @@
             </tr>
             % end
         </table>
+        <form action="/udarec/" method="POST">
+            kot: <input type="text" name="kot">
+            moč : <input type="text" name="moc">
+            <input type="submit" value="Udari!">
+          </form>
+          <ul>
+          %for i in slovar:
+          % stevilka = i  
+          % ime = slovar[i][0] 
+          % udarec = slovar[i][2]
+          % koordinate = slovar[i][1]
+          <li>
+              {{stevilka}} - {{ime}} - {{udarec}} - {{koordinate}}
+          </li>
+          %end
+        </ul>
     </body>
 </html>

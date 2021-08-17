@@ -1,0 +1,13 @@
+dodaj igralca
+
+<form action="/dodaj-igralca/" method="POST">
+    ime: <input type="text" name="ime">
+    <input type="submit" value="Dodaj!">
+  </form>
+<ul>
+%for i in igra.igralci: 
+% stevilka = i 
+% ime = igra.igralci[i][0] 
+<li> stevilka - ime</li>
+%end
+</ul>
