@@ -1,25 +1,37 @@
 import random
 import math
+import json
 
 #Ugotovi kaj in kako boš, če sta na istem mestu igralca
 #ugotovi kaj se zgodi, če gre igralec izven polja
 #slovar je oblike {0: ['ime', (x, y),stevilo_udarcev]}
 #NI V REDU POGLEJ POD  METODO UDAREC
-
+DATOTEKA_S_STANJEM = "stanje.json"
 
 class Igra:
 
-    def __init__(self, pozicija_luknje, igralec_na_vrsti, koordinate_zacetka):
-        self.igralci = {}
-        self.runda = 0
+    def __init__(self, pozicija_luknje, igralec_na_vrsti, koordinate_zacetka, igralci = None ,koncani_igralci = None, runda = None, ):
+        if igralci is None:
+            self.igralci = {}
+        else :
+            self.igralci = igralci
+        if runda is None:
+            self.runda = 0
+        else :
+            self.runda = runda
+        if koncani_igralci is None:
+            self.koncani_igralci = {}
+        else :
+            self.koncani_igralci = koncani_igralci
         self.pozicija_luknje = pozicija_luknje
         self.igralec_na_vrsti = igralec_na_vrsti
         self.koordinate_zacetka = koordinate_zacetka
-        self.koncani_igralci = {}
 
 
-    def __str__(self):
-        return f"Pozicija luknje je:{self.pozicija_luknje} \n Igralec, ki je na vrsti je igralec: {self.igralci[self.igralec_na_vrsti][0]}\n Številka: {self.igralec_na_vrsti}\n Runda : {self.runda} \n Začetne koordinate so {self.koordinate_zacetka}\n Igralci so {self.igralci}"
+
+    #def __str__(self):
+     #  
+      #  return f"Pozicija luknje je:{self.pozicija_luknje} \n Igralec, ki je na vrsti je igralec: {self.igralci[self.igralec_na_vrsti][0]}\n Številka: {self.igralec_na_vrsti}\n Runda : {self.runda} \n Začetne koordinate so {self.koordinate_zacetka}\n Igralci so {self.igralci}"
 
     def dodaj_igralca(self, ime_igralca):
         stevilo_udarcev = 0
@@ -120,7 +132,7 @@ def preveri_udarec(novi_x,novi_y):
 
 
 
-def nova_igra(igra = random.randint(1,5)):
+def nova_igra1(igra = random.randint(1,5)):
     if igra == 1:
         x_koordinata_luknje = random.randint(60, 100)
         y_koordinata_luknje = random.randint(1, 40)
@@ -176,6 +188,50 @@ def izracun_premika(moc, kot):
     #izračuna premik glede na kot in moč,
     #pozor y os je pozitivna navzdol, zato se v metodi, udarec y odšteje
 
+class Golf:
+
+    def __init__(self, datoteka_s_stanjem):
+        self.igre = {}
+        self.datoteka_s_stanjem = datoteka_s_stanjem
+
+    def prost_id_igre(self):
+        if len(self.igre) == 0 :
+            return 0
+        else :
+            return max(self.igre.keys()) + 1
+
+    def udarec(self,id_igre, moc, kot):
+        self.nalozi_igre_iz_datoteke()
+        igra = self.igre[id_igre]
+        igra.udarec(moc,kot)
+        self.igre[id_igre] = igra
+        self.zapisi_igre_v_datoteko()
+
+    def dodaj_igralca(self,id_igre,ime):
+        self.nalozi_igre_iz_datoteke()
+        igra = self.igre[id_igre]
+        igra.dodaj_igralca(ime)
+        self.igre[id_igre] = igra
+        self.zapisi_igre_v_datoteko()
+
+
+    def nova_igra(self, stevilka_igre = random.randint(1,5) ):
+        self.nalozi_igre_iz_datoteke()
+        id_igre = self.prost_id_igre()
+        igra = nova_igra1(stevilka_igre)
+        self.igre[id_igre] = igra
+        self.zapisi_igre_v_datoteko()
+        return id_igre
+
+    def zapisi_igre_v_datoteko(self):
+        with open(self.datoteka_s_stanjem, "w", encoding="utf-8") as f:
+            igre = {id_igre: (igra.igralci, igra.runda , igra.pozicija_luknje, igra.igralec_na_vrsti , igra.koordinate_zacetka, igra.koncani_igralci ) for id_igre, igra in self.igre.items()}
+            json.dump(igre, f)
+        
+    def nalozi_igre_iz_datoteke(self):
+        with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as f:
+            igre = json.load(f)
+            self.igre = {int( id_igre ): (Igra(pozicija_luknje, igralec_na_vrsti, koordinate_zacetka, igralci, koncani_igralci, runda) for id_igre , (igralci,runda,pozicija_luknje, igralec_na_vrsti, koordinate_zacetka,koncani_igralci) in igre.items())}
 
 #I = nova_igra()
 #I.dodaj_igralca("Matic")
