@@ -10,7 +10,7 @@ def osnovna_stran():
     return bottle.template("osnovna.html")
 
 @bottle.get("/igra")
-def igra_stran():
+def igra_stran(napaka={}):
     golf.nalozi_igre_iz_datoteke()
     id_igre = int(bottle.request.get_cookie("idigre" , secret=SKRIVNOST).split("e")[1])
     igra = golf.igre[id_igre]
@@ -21,10 +21,10 @@ def igra_stran():
     koordinate_zacetka = igra.koordinate_zacetka
     runda = igra.runda
     koncani_igralci = igra.koncani_igralci
-    return bottle.template("igra.html",igralci=igralci ,x_koordinata_luknje=x_koordinata_luknje,y_koordinata_luknje=y_koordinata_luknje,pozicija_luknje=pozicija_luknje,igralec_na_vrsti=igralec_na_vrsti,koordinate_zacetka=koordinate_zacetka,runda=runda,koncani_igralci=koncani_igralci)
+    return bottle.template("igra.html",igralci=igralci ,x_koordinata_luknje=x_koordinata_luknje,y_koordinata_luknje=y_koordinata_luknje,pozicija_luknje=pozicija_luknje,igralec_na_vrsti=igralec_na_vrsti,koordinate_zacetka=koordinate_zacetka,runda=runda,koncani_igralci=koncani_igralci, napaka = napaka)
 
 
-@bottle.post("/nova-igra/")
+@bottle.get("/nova-igra/")
 def preusmeritev_na_izbiro_igre():
     bottle.redirect("/izbira-igre/")
 
@@ -87,18 +87,32 @@ def stran_dodajanja():
     id_igre = int(bottle.request.get_cookie("idigre" , secret=SKRIVNOST).split("e")[1])
     igra = golf.igre[id_igre]
     igralci = igra.igralci
-    return bottle.template("dodajanje-igralcev.html", igra = igra, igralci = igralci)
+    napaka = {}
+    return bottle.template("dodajanje-igralcev.html", igra = igra, igralci = igralci , napaka = napaka)
 
 
 @bottle.post("/dodaj-igralca/")
 def dodaj_igralca():
     ime = bottle.request.forms["ime"]
     id_igre = int(bottle.request.get_cookie("idigre" , secret=SKRIVNOST).split("e")[1])
-    if ime:
-        golf.dodaj_igralca(id_igre, ime)
+    imena = []
+    igra = golf.igre[id_igre]
+    igralci = igra.igralci
+    napaka = {}
+    for i in igralci:
+        imena.append(igralci[i][0].upper())
+    if ime.upper() in imena:
+        napaka["ime"] = "Ime je že zasedeno"
+        return bottle.template("dodajanje-igralcev", igra = igra, igralci=igralci , napaka = napaka)
+    elif not ime :
+        napaka["ime"] = "Ime mora biti ne prazno"
+        return bottle.template("dodajanje-igralcev", igra = igra, igralci=igralci , napaka = napaka)
+    elif not ime.isalpha() :
+        napaka["ime"] = "Ime je lahko sestavljeno le iz črk"
+        return bottle.template("dodajanje-igralcev", igra = igra, igralci=igralci , napaka = napaka)
     else:
-        return "ime mora biti ne prazno"
-    bottle.redirect("/dodajanje-igralcev/")
+        golf.dodaj_igralca(id_igre, ime)
+        bottle.redirect("/dodajanje-igralcev/")
 
 
 @bottle.post("/udarec/")
@@ -106,8 +120,12 @@ def udarec():
     id_igre = int(bottle.request.get_cookie("idigre" , secret=SKRIVNOST).split("e")[1])
     moc = int(bottle.request.forms["moc"])
     kot = int(bottle.request.forms["kot"])
-    golf.udarec(id_igre, moc, kot)
-    bottle.redirect("/igra")
+    preveri = golf.udarec(id_igre, moc, kot)
+    napaka = {}
+    igra = golf.igre[id_igre]
+    #if preveri == "Napaka":
+    #    napaka["ime"] = "Žogica je odletela izven meja"
+    bottle.redirect("/igra")    
 
 
 @bottle.get("/img/<picture>")
@@ -127,5 +145,9 @@ def rezultati():
     runda = igra.runda
     koncani_igralci = igra.koncani_igralci
     return bottle.template("rezultati.html", igralci = igralci, runda=runda,koncani_igralci=koncani_igralci)
+
+@bottle.get("/navodila")
+def navodila():
+    return bottle.template("navodila.html")
 
 bottle.run(reloader=True, debug=True)

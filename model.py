@@ -57,10 +57,11 @@ class Igra:
 
             self.naslednji_igralec()
             self.igralec_koncal()
+            return "Vredu"
         else:
             self.naslednji_igralec()
             self.igralec_koncal()
-            return "Žogica je odletela izven meja"
+            return "Napaka"
 
     def naslednji_igralec(self):
         if self.igralec_na_vrsti < max(self.igralci.keys()):
@@ -202,9 +203,15 @@ class Golf:
     def udarec(self, id_igre, moc, kot):
         self.nalozi_igre_iz_datoteke()
         igra = self.igre[id_igre]
-        igra.udarec(moc, kot)
-        self.igre[id_igre] = igra
-        self.zapisi_igre_v_datoteko()
+        preveri = igra.udarec(moc, kot)
+        if preveri == "Vredu":
+            self.igre[id_igre] = igra
+            self.zapisi_igre_v_datoteko()  
+            return "Vredu"
+        else :
+            self.igre[id_igre] = igra
+            self.zapisi_igre_v_datoteko()  
+            return "Napaka"          
 
     def dodaj_igralca(self, id_igre, ime):
         self.nalozi_igre_iz_datoteke()
@@ -221,11 +228,19 @@ class Golf:
         self.zapisi_igre_v_datoteko()
         return id_igre
 
+    #def zapisi_igre_v_datoteko(self):
+     #   with open(self.datoteka_s_stanjem, "w", encoding="utf-8") as f:
+      #      igre = {id_igre: (igra.igralci, igra.runda, igra.pozicija_luknje, igra.igralec_na_vrsti,
+       #                       igra.koordinate_zacetka, igra.koncani_igralci) for id_igre, igra in self.igre.items()}
+        #    json.dump(igre, f)
+
     def zapisi_igre_v_datoteko(self):
+        igre = {}
         with open(self.datoteka_s_stanjem, "w", encoding="utf-8") as f:
-            igre = {id_igre: (igra.igralci, igra.runda, igra.pozicija_luknje, igra.igralec_na_vrsti,
-                              igra.koordinate_zacetka, igra.koncani_igralci) for id_igre, igra in self.igre.items()}
-            json.dump(igre, f)
+            for id_igre, igra in self.igre.items():
+                igre[id_igre] = (igra.igralci, igra.runda, igra.pozicija_luknje, igra.igralec_na_vrsti,igra.koordinate_zacetka, igra.koncani_igralci)
+            json.dump(igre,f)    
+
 
     #def nalozi_igre_iz_datoteke(self):
      #   with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as f:
@@ -238,6 +253,7 @@ class Golf:
             igre = json.load(f)
             for id_igre, (igralci, runda, pozicija_luknje, igralec_na_vrsti, koordinate_zacetka, koncani_igralci) in igre.items():
                 self.igre[id_igre] = Igra(pozicija_luknje, igralec_na_vrsti, koordinate_zacetka, igralci, koncani_igralci, runda)
+
 #I = nova_igra()
 #I.dodaj_igralca("Matic")
 #I.dodaj_igralca("Iza")
