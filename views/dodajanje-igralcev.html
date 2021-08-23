@@ -1,13 +1,77 @@
-dodaj igralca
+% rebase("base.html")
 
-<form action="/dodaj-igralca/" method="POST">
-    ime: <input type="text" name="ime">
-    <input type="submit" value="Dodaj!">
-  </form>
-<ul>
-%for i in igra.igralci: 
-% stevilka = i 
-% ime = igra.igralci[i][0] 
-<li> stevilka - ime</li>
-%end
-</ul>
+<div class="container">
+
+  <div class="row">
+    <div class="col m5 l5">
+      <h1 class="white-text">DODAJ IGRALCE</h1>
+      <h5 class="white-text">Največje možno število igralcev je 5</h5>
+      % if 5 > len(igralci) :
+
+      <form action="/dodaj-igralca/" method="POST">
+        <div class="input-field">
+          <input type="text" name="ime" id="text">
+          <label for="text" class="border-bottom-white"> Ime igralca </label>
+          % if "ime" in napaka:
+          <span class="helper-text yellow-text text-lighten-3">{{napaka["ime"]}}</span>
+
+          % end
+        </div>
+        <button type="submit" class="btn-large light-green lighten-2 waves-effect">
+          <h6><b>DODAJ</b> </h6>
+        </button>
+      </form>
+      % end
+
+
+
+
+    </div>
+
+    <div class="col m5 l5 offset-m1 offset-l2">
+      <ul class="collection with-header transparent">
+        <li class="collection-header transparent">
+          <h4 class="white-text">IGRALCI</h4>
+        </li>
+
+        %for i in igra.igralci:
+        % stevilka = i
+        % ime = igra.igralci[i][0]
+        <li class="collection-item avatar transparent">
+          <span class="title white-text">
+            <h6><b>{{ime}}</b></h6>
+          </span>
+          
+          <a href="" class="secondary-content">
+            % if stevilka == 0:
+            <i class="material-icons red-text">brightness_1</i>
+            % elif stevilka == 1:
+            <i class="material-icons blue-text">brightness_1</i>
+            % elif stevilka == 2:
+            <i class="material-icons purple-text">brightness_1</i>
+            % elif stevilka == 3:
+            <i class="material-icons yellow-text">brightness_1</i>
+            % elif stevilka == 4:
+            <i class="material-icons brown-text">brightness_1</i>
+            % end
+          </a>
+        </li>
+        %end
+
+      </ul>
+    </div>
+  </div>
+
+  % if len(igralci) > 0 :
+  <div class="row">
+    <div class="col offset-m6 offset-l7 ">
+      <form action="/igra" method="GET" style="float: right;">
+        <button type="submit" class="btn-large light-green lighten-2 waves-effect">
+          <h6><b>Začni igro</b></h6>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+% end

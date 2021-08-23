@@ -1,70 +1,258 @@
 <html>
-    <head>
-        <style>
-        table {
-          border: 1px solid black;
-          border-collapse: collapse;
-          width: 700px;
-          height: 700px ;
-          table-layout: fixed;
 
-          float: left;
-            text-size-adjust: inherit ;
-        }
-        td {
-            border: 1px solid black;
-            width: 7px;
-            height: 7px;
-            size: 7px;
-            max-width: 7px;
-            max-height: 7px;
-            background-image: url("img/trava.jpg");
-        }
-        form {
-            float: right;
+<head>
+    <title>Golf</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <!--slider-->
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+    <link rel = "stylesheet"
+       href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel = "stylesheet"
+       href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+    <script type = "text/javascript"
+       src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+    </script> 
+
+    <style>
+        body {
+            /* The image used */
+            background-image: url("/img/golf_odzadje.jpg");
+
+            /* Full height */
+            height: 100%;
+
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
         }
 
-        text{
-            max-height: 6px;
-            max-width: 6px;
+
+
+        .trava {
+            background-image: url("img/trava3.jpg");
         }
 
-        </style>
-    </head>
-    <body>
-        <table>
-            % for i in range(1,101):
-            <tr>
-                % for j in range(1,101):
-                <td>
-                    % for x in slovar:
-                    % x_koord , y_koord = slovar[x][1]
-                    %   if x_koord == j and y_koord == i :
-                     o
-                    % elif j == x_koordinata_luknje and i == y_koordinata_luknje:
-                     @
+        tr {
+            border-bottom: none;
+        }
+
+        .transparent {
+            background-color: transparent;
+        }
+
+        input[type=range]+.thumb {
+            background-color: #dce775;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            background-color: #dce775;
+        }
+
+        input[type=range]::-moz-range-thumb {
+            background-color: #dce775;
+        }
+
+        input[type=range]::-ms-thumb {
+            background-color: #dce775
+        }
+
+        input[type=range]+.thumb.active .value {
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="row">
+        <div class="col l7">
+            <table class="trava"
+                style=" height: 100vmin; width: 100vmin; margin-top: 10px; background-image: url(img/trava3.jpg);">
+                <tbody>
+                    % for i in range(1,101):
+                    <tr style="padding: 0px;">
+                        % for j in range(1,101):
+                        <td style="padding: 0px; height: 1%; width: 1%;">
+                            % for x in igralci:
+                            % x_koord , y_koord = igralci[x][1]
+                            % if x_koord == j and y_koord == i :
+                            % if x == 0:
+                            <img src="/img/rdeca_zogica.png" alt="" width="7px" height="7px">
+                            % elif x == 1:
+                            <img src="/img/modra_zogica.png" alt="" width="7px" height="7px">
+                            % elif x == 2:
+                            <img src="/img/vijolicna_zogica.png" alt="" width="7px" height="7px">
+                            % elif x == 3:
+                            <img src="/img/rumena_zogica.png" alt="" width="7px" height="7px">
+                            % elif x == 4:
+                            <img src="/img/rjava_zogica.png" alt="" width="7px" height="7px">
+                            % end
+                            % end
+                            % end
+                            % if j == x_koordinata_luknje and i == y_koordinata_luknje:
+                            <img src="/img/belo.png" alt="" width="7px" height="7px">
+                            % end
+                        </td>
+                        % end
+                    </tr>
                     % end
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col l3">
+
+            % if len(igralci) > 0:
+
+            <div class="card transparent">
+                <div class="card-content white-text">
+                    <span class="card-title">IGRALEC NA VRSTI:</span>
+                    % if igralec_na_vrsti == 0 :
+                    <p> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
+                            class="material-icons red-text left">brightness_1</i></p>
+                    % elif igralec_na_vrsti == 1 :
+                    <p> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
+                            class="material-icons blue-text left">brightness_1</i></p>
+                    % elif igralec_na_vrsti == 2 :
+                    <p> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
+                            class="material-icons purple-text left">brightness_1</i></p>
+                    % elif igralec_na_vrsti == 3 :
+                    <p> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
+                            class="material-icons yellow-text left">brightness_1</i></p>
+                    % elif igralec_na_vrsti == 4 :
+                    <p> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
+                            class="material-icons brown-text left">brightness_1</i></p>
                     % end
-                </td>
-                % end
-            </tr>
+                </div>
+            </div>
+
             % end
-        </table>
-        <form action="/udarec/" method="POST">
-            kot: <input type="text" name="kot">
-            moč : <input type="text" name="moc">
-            <input type="submit" value="Udari!">
-          </form>
-          <ul>
-          %for i in slovar:
-          % stevilka = i  
-          % ime = slovar[i][0] 
-          % udarec = slovar[i][2]
-          % koordinate = slovar[i][1]
-          <li>
-              {{stevilka}} - {{ime}} - {{udarec}} - {{koordinate}}
-          </li>
-          %end
-        </ul>
-    </body>
+
+            <div class="card transparent white-text">
+                <div class="card-content">
+                    <div class="card-title">
+                        RUNDA: {{runda}}
+
+                    </div>
+                </div>
+            </div>
+
+            % if "ime" in napaka:
+            <p> {{napaka["ime"]}}</p>
+
+            % end
+
+            % if len(igralci) > 0:
+            <form action="/udarec/" method="POST">
+                <p class="white-text ">KOT:</p>
+                <p class="range-field">
+                
+                <input type="range"  id="test5" min="0" max="360" name="kot" step="1" value="0" oninput="showVal(this.value)" onchange="showVal(this.value)" />
+                </p>
+
+                <p class="white-text">MOČ:</p>
+                <p class="range-field">
+                
+                <input type="range" id="test5" min="0" max="100" name="moc" value="0" />
+                </p>
+                <button class="btn-large light-green lighten-2 waves-effect" type="submit" value="Udari!">
+                    <text>
+                        <h6><b>Udari</b></h6>
+                    </text>
+                </button>
+            </form>
+            % end
+
+
+
+            % if len(koncani_igralci) > 0:
+            <form action="/rezultati/" method="POST">
+                <button class="btn-large light-green lighten-2 waves-effect" type="submit">
+                    <h6><b>Končaj igro</b></h6>
+                </button>
+            </form>
+            % else:
+            <form action="/rezultati/" method="POST">
+                <button class="btn-large light-green lighten-2 waves-effect" type="submit">
+                    <h6><b>Predajam se</b></h6>
+                </button>
+            </form>
+            % end
+
+            <form action="/navodila" method="get">
+                <button class="btn light-green lighten-2 waves-effect" type="submit" >Navodila
+                    <i class="material-icons right">help_outline</i>
+                  </button>
+            </form>
+
+        </div>
+
+        <div class="col l2">
+            <ul class="collection with-header transparent white-text">
+                % if len(igralci) > 0:
+                <li class="collection-header transparent">
+                    <h4 class="">IGRALCI</h4>
+                </li>
+
+                %for i in igralci:
+                % stevilka = i
+                % ime = igralci[i][0]
+                % udarec = igralci[i][2]
+                <li class="collection-item avatar transparent">
+                    <span class="title">
+                        <h6><b>{{ime}}</b></h6>
+                    </span>
+                    <p class="">Udarec : {{udarec}}</p>
+                    <a href="" class="secondary-content">
+                        % if stevilka == 0:
+                        <i class="material-icons red-text">brightness_1</i>
+                        % elif stevilka == 1:
+                        <i class="material-icons blue-text">brightness_1</i>
+                        % elif stevilka == 2:
+                        <i class="material-icons purple-text">brightness_1</i>
+                        % elif stevilka == 3:
+                        <i class="material-icons yellow-text">brightness_1</i>
+                        % elif stevilka == 4:
+                        <i class="material-icons brown-text">brightness_1</i>
+                        % end
+                    </a>
+                </li>
+                % end
+                % end
+
+                % if len(koncani_igralci) > 0:
+
+                <li class="collection-header transparent">
+                    <h4 class="">KONČANI IGRALCI</h4>
+                </li>
+                % for i in range(len(koncani_igralci)):
+                % ime , stevilo_udarcev = koncani_igralci[i]
+                <li class="collection-item avatar transparent">
+                    <span class="title">
+                        <h6><b>{{i+1}}. {{ime}}</b></h6>
+                        <p class="">Število udarecev : {{stevilo_udarcev}}</p>
+                    </span>
+                </li>
+                % end
+            </ul>
+
+            % end
+
+        </div>
+
+
+
+    </div>
+
+</body>
+
 </html>
