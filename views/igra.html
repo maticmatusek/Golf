@@ -9,17 +9,14 @@
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    
+
     <!--slider-->
-    <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
-    <link rel = "stylesheet"
-       href = "https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel = "stylesheet"
-       href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
-    <script type = "text/javascript"
-       src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
-    </script> 
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+    </script>
 
     <style>
         body {
@@ -48,7 +45,7 @@
         .transparent {
             background-color: transparent;
         }
-
+        /* nastavitve za slider */
         input[type=range]+.thumb {
             background-color: #dce775;
         }
@@ -76,7 +73,7 @@
     <div class="row">
         <div class="col l7">
             <table class="trava"
-                style=" height: 100vmin; width: 100vmin; margin-top: 10px; background-image: url(img/trava3.jpg);">
+                style=" height: 97vmin; width: 97vmin; margin-top: 10px; background-image: url(img/trava3.jpg);">
                 <tbody>
                     % for i in range(1,101):
                     <tr style="padding: 0px;">
@@ -146,23 +143,21 @@
                 </div>
             </div>
 
-            % if "ime" in napaka:
-            <p> {{napaka["ime"]}}</p>
 
-            % end
 
             % if len(igralci) > 0:
             <form action="/udarec/" method="POST">
                 <p class="white-text ">KOT:</p>
                 <p class="range-field">
-                
-                <input type="range"  id="test5" min="0" max="360" name="kot" step="1" value="0" oninput="showVal(this.value)" onchange="showVal(this.value)" />
+
+                    <input type="range"  min="0" max="360" name="kot" step="1" value="0"
+                        oninput="showVal(this.value)" onchange="showVal(this.value)" />
                 </p>
 
                 <p class="white-text">MOČ:</p>
                 <p class="range-field">
-                
-                <input type="range" id="test5" min="0" max="100" name="moc" value="0" />
+
+                    <input type="range"  min="0" max="100" name="moc" value="0" />
                 </p>
                 <button class="btn-large light-green lighten-2 waves-effect" type="submit" value="Udari!">
                     <text>
@@ -176,22 +171,22 @@
 
             % if len(koncani_igralci) > 0:
             <form action="/rezultati/" method="POST">
-                <button class="btn-large light-green lighten-2 waves-effect" type="submit">
+                <button class="btn-large lime darken-1 waves-effect" type="submit">
                     <h6><b>Končaj igro</b></h6>
                 </button>
             </form>
             % else:
             <form action="/rezultati/" method="POST">
-                <button class="btn-large light-green lighten-2 waves-effect" type="submit">
+                <button class="btn-large lime darken-1 waves-effect" type="submit">
                     <h6><b>Predajam se</b></h6>
                 </button>
             </form>
             % end
 
             <form action="/navodila" method="get">
-                <button class="btn light-green lighten-2 waves-effect" type="submit" >Navodila
+                <button class="btn amber waves-effect" type="submit">Navodila
                     <i class="material-icons right">help_outline</i>
-                  </button>
+                </button>
             </form>
 
         </div>

@@ -1,5 +1,5 @@
 % rebase("base.html")
-        
+
 <div class="container">
     <div class="row">
         <div class="col l6">
@@ -8,8 +8,10 @@
             <ul>
                 % for i in igralci:
                 % ime = igralci[i][0]
-               <li class="white-text"> <h5><b>{{ime}}</b></h5> </li>
-                % end 
+                <li class="white-text">
+                    <h5><b>{{ime}}</b></h5>
+                </li>
+                % end
             </ul>
             % end
 
@@ -20,10 +22,11 @@
             % if len(koncani_igralci) > 0:
             <h3 class="white-text"> IGRALCI, KI SO IGRO KONČALI</h3>
             <ul>
-             % for i in range(len(koncani_igralci)):
-             % ime , stevilo_udarcev = koncani_igralci[i]
-             <li class="white-text"><h5><b> {{i+1}}. {{ime}}</b></h5>  Število udarcev: {{stevilo_udarcev}}
-             % end
+                % for i in range(len(koncani_igralci)):
+                % ime , stevilo_udarcev = koncani_igralci[i]
+                <li class="white-text">
+                    <h5><b> {{i+1}}. {{ime}}</b></h5> Število udarcev: {{stevilo_udarcev}}
+                    % end
             </ul>
 
             % end
@@ -31,7 +34,9 @@
     </div>
 
     <form action="/" method="GET" class="center-align">
-        <button type="submit" class="btn-large light-green lighten-2 waves-effect "><h6><b>Začetna stran</b></h6> </button>
+        <button type="submit" class="btn-large light-green lighten-2 waves-effect ">
+            <h6><b>Začetna stran</b></h6>
+        </button>
     </form>
 
 </div>

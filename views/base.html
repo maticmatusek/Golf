@@ -2,117 +2,127 @@
 <html>
 
 <head>
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-    <title>Golf</title>
-    <style>
-
-body, html {
-  height: 100%;
-}
-
-.transparent{
-    background-color: transparent;
-}
-
-.bg {
-  /* The image used */
-  background-image: url("/img/golf_odzadje.jpg");
-
-  /* Full height */
-  height: 100%;
-
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-td,th{
-    padding: 0px;
-    border: none; 
-    border-collapse: collapse;
-}
-
-table{
-  border: none;
-  border-collapse: collapse;
-}
-
-
-        .desno_spodaj{
-        
-            background-image: url(/img/golf_desno_spodaj.jpg);
-        }
-
-        .desno_zgoraj{
-        
-        background-image: url(/img/golf_desno_zgoraj.jpg);
-    }
-    .levo_spodaj{
-        
-        background-image: url(/img/golf_levo_spodaj.jpg);
-    }
-    .levo_zgoraj{
-        
-        background-image: url(/img/golf_levo_zgoraj.jpg);
-    }
-    .na_sredini{
-        
-        background-image: url(/img/na_sredini.jpg);
-    }
-    .mesano{
-        
-        background-image: url(/img/golf_mesano.jpg);
+  <title>Golf</title>
+  <style>
+    body,
+    html {
+      height: 100%;
     }
 
+    .transparent {
+      background-color: transparent;
+    }
+
+    .bg {
+      /* The image used */
+      background-image: url("/img/golf_odzadje.jpg");
+
+      /* Full height */
+      height: 100%;
+
+      /* Center and scale the image nicely */
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    td,
+    th {
+      padding: 0px;
+      border: none;
+      border-collapse: collapse;
+    }
+
+    table {
+      border: none;
+      border-collapse: collapse;
+    }
+
+
+    .desno_spodaj {
+
+      background-image: url(/img/golf_desno_spodaj.jpg);
+    }
+
+    .desno_zgoraj {
+
+      background-image: url(/img/golf_desno_zgoraj.jpg);
+    }
+
+    .levo_spodaj {
+
+      background-image: url(/img/golf_levo_spodaj.jpg);
+    }
+
+    .levo_zgoraj {
+
+      background-image: url(/img/golf_levo_zgoraj.jpg);
+    }
+
+    .na_sredini {
+
+      background-image: url(/img/na_sredini.jpg);
+    }
+
+    .mesano {
+
+      background-image: url(/img/golf_mesano.jpg);
+    }
+    /* nastavitve za obrazce */
     .input-field label {
-     color:white;
+      color: white;
     }
+
     .input-field input[type=text]:focus {
-     border-bottom: 1px solid white;
-     box-shadow: 0 1px 0 0 white;
-   }
+      border-bottom: 1px solid white;
+      box-shadow: 0 1px 0 0 white;
+    }
 
-      /* label focus color */
-      .input-field input[type=text]:focus + label {
-     color: white;
-   }
-      /* valid color */
-      .input-field input[type=text].valid {
-     border-bottom: 1px solid white;
-     box-shadow: 0 1px 0 0 white;
-   }
-   /* invalid color */
-   .input-field input[type=text].invalid {
-     border-bottom: 1px solid white;
-     box-shadow: 0 1px 0 0 white;
-   }
-   /* icon prefix focus color */
-   .input-field .prefix.active {
-     color: white;
-   }
+    /* label focus color */
+    .input-field input[type=text]:focus+label {
+      color: white;
+    }
 
-   /* label focus color */
- .input-field input:focus + label {
-   color: white !important;
- }
- /* label underline focus color */
- .row .input-field input:focus {
-   border-bottom: 1px solid white !important;
-   box-shadow: 0 1px 0 0 white !important
- }
-    </style>
+    /* valid color */
+    .input-field input[type=text].valid {
+      border-bottom: 1px solid white;
+      box-shadow: 0 1px 0 0 white;
+    }
+
+    /* invalid color */
+    .input-field input[type=text].invalid {
+      border-bottom: 1px solid white;
+      box-shadow: 0 1px 0 0 white;
+    }
+
+    /* icon prefix focus color */
+    .input-field .prefix.active {
+      color: white;
+    }
+
+    /* label focus color */
+    .input-field input:focus+label {
+      color: white !important;
+    }
+
+    /* label underline focus color */
+    .row .input-field input:focus {
+      border-bottom: 1px solid white !important;
+      box-shadow: 0 1px 0 0 white !important
+    }
+  </style>
 </head>
 
 <body class="bg">
-    {{!base}}
+  {{!base}}
 </body>
 
 </html>
