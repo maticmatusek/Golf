@@ -10,7 +10,7 @@ def osnovna_stran():
     return bottle.template("osnovna.html")
 
 @bottle.get("/igra")
-def igra_stran(napaka={}):
+def igra_stran():
     golf.nalozi_igre_iz_datoteke()
     id_igre = int(bottle.request.get_cookie("idigre" , secret=SKRIVNOST).split("e")[1])
     igra = golf.igre[id_igre]
@@ -21,7 +21,7 @@ def igra_stran(napaka={}):
     koordinate_zacetka = igra.koordinate_zacetka
     runda = igra.runda
     koncani_igralci = igra.koncani_igralci
-    return bottle.template("igra.html",igralci=igralci ,x_koordinata_luknje=x_koordinata_luknje,y_koordinata_luknje=y_koordinata_luknje,pozicija_luknje=pozicija_luknje,igralec_na_vrsti=igralec_na_vrsti,koordinate_zacetka=koordinate_zacetka,runda=runda,koncani_igralci=koncani_igralci, napaka = napaka)
+    return bottle.template("igra.html",igralci=igralci ,x_koordinata_luknje=x_koordinata_luknje,y_koordinata_luknje=y_koordinata_luknje,pozicija_luknje=pozicija_luknje,igralec_na_vrsti=igralec_na_vrsti,koordinate_zacetka=koordinate_zacetka,runda=runda,koncani_igralci=koncani_igralci)
 
 
 @bottle.get("/nova-igra/")
@@ -121,12 +121,13 @@ def udarec():
     moc = int(bottle.request.forms["moc"])
     kot = int(bottle.request.forms["kot"])
     preveri = golf.udarec(id_igre, moc, kot)
-    napaka = {}
-    igra = golf.igre[id_igre]
-    #if preveri == "Napaka":
-    #    napaka["ime"] = "Žogica je odletela izven meja"
+    if preveri == "Napaka":
+        bottle.redirect("/izven-meja")
     bottle.redirect("/igra")    
 
+@bottle.get("/izven-meja")
+def izven_meja():
+    return bottle.template("izven_meja.html")
 
 @bottle.get("/img/<picture>")
 def serve_picture(picture):
@@ -138,10 +139,6 @@ def rezultati():
     id_igre = int(bottle.request.get_cookie("idigre" , secret=SKRIVNOST).split("e")[1])
     igra = golf.igre[id_igre]
     igralci = igra.igralci
-    x_koordinata_luknje, y_koordinata_luknje = igra.pozicija_luknje
-    pozicija_luknje = igra.pozicija_luknje
-    igralec_na_vrsti = igra.igralec_na_vrsti
-    koordinate_zacetka = igra.koordinate_zacetka
     runda = igra.runda
     koncani_igralci = igra.koncani_igralci
     return bottle.template("rezultati.html", igralci = igralci, runda=runda,koncani_igralci=koncani_igralci)

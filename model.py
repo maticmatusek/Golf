@@ -2,10 +2,7 @@ import random
 import math
 import json
 
-#Ugotovi kaj in kako boš, če sta na istem mestu igralca
-#ugotovi kaj se zgodi, če gre igralec izven polja
-#slovar je oblike {0: ['ime', (x, y),stevilo_udarcev]}
-#NI V REDU POGLEJ POD  METODO UDAREC
+
 DATOTEKA_S_STANJEM = "stanje.json"
 
 
@@ -28,17 +25,13 @@ class Igra:
         self.igralec_na_vrsti = igralec_na_vrsti
         self.koordinate_zacetka = koordinate_zacetka
 
-    #def __str__(self):
-     #
-      #  return f"Pozicija luknje je:{self.pozicija_luknje} \n Igralec, ki je na vrsti je igralec: {self.igralci[self.igralec_na_vrsti][0]}\n Številka: {self.igralec_na_vrsti}\n Runda : {self.runda} \n Začetne koordinate so {self.koordinate_zacetka}\n Igralci so {self.igralci}"
-
     def dodaj_igralca(self, ime_igralca):
         stevilo_udarcev = 0
         stevilka_igralca = len(self.igralci)
         koordinata_x, koordinata_y = self.koordinate_zacetka
         self.igralci[stevilka_igralca] = [ime_igralca,
                                           (koordinata_x, koordinata_y), stevilo_udarcev]
-        #doda igralca med množico igralcev in jih oštevilči od skupaj z 0 naprej
+        # doda igralca med množico igralcev in jih oštevilči od skupaj z 0 naprej
 
     def udarec(self, moc, kot):
         if moc > 100 or moc < 0:
@@ -76,7 +69,7 @@ class Igra:
         for i in self.igralci:
             mnozica.add(self.igralci[i][2])
         self.runda = min(mnozica) + 1
-        #ko imajo vsi igralci isto število udarcev, se runda zamenja
+        # ko imajo vsi igralci isto število udarcev, se runda zamenja
 
     def igralec_koncal(self):
         for i in self.igralci.keys():
@@ -88,8 +81,8 @@ class Igra:
                 break
             else:
                 pass
-        #preveri, če je igralec končal in ga vrže ven iz igre,
-        #ter ga doda na seznam igralcev, ki so končali skupaj s številom rund
+        # preveri, če je igralec končal in ga vrže ven iz igre,
+        # ter ga doda na seznam igralcev, ki so končali skupaj s številom rund
 
     def preveri_isto_mesto(self, novi_x, novi_y):
         mnozica = set()
@@ -176,16 +169,16 @@ def nova_igra1(igra=random.randint(1, 5)):
             x_koordinata_zacetka = random.randint(80, 100)
             y_koordinata_zacetka = random.randint(1, 100)
             return Igra((x_koordinata_luknje, y_koordinata_luknje), 0, (x_koordinata_zacetka, y_koordinata_zacetka))
-    #naredi novo igro brez igralcev, igralce je treba dodati z metodo .dodaj_igralca,
-    #vsem se na začetku priredi enaka pozicija
+    # naredi novo igro brez igralcev, igralce je treba dodati z metodo .dodaj_igralca,
+    # vsem se na začetku priredi enaka pozicija
 
 
 def izracun_premika(moc, kot):
     premik_koordinate_x = round(math.cos(math.radians(kot)) * moc)
     premik_koordinate_y = round(math.sin(math.radians(kot)) * moc)
     return (premik_koordinate_x, premik_koordinate_y)
-    #izračuna premik glede na kot in moč,
-    #pozor y os je pozitivna navzdol, zato se v metodi, udarec y odšteje
+    # izračuna premik glede na kot in moč,
+    # pozor y os je pozitivna navzdol, zato se v metodi, udarec y odšteje
 
 
 class Golf:
@@ -195,10 +188,13 @@ class Golf:
         self.datoteka_s_stanjem = datoteka_s_stanjem
 
     def prost_id_igre(self):
+        mnozica = []
+        for i in self.igre.keys():
+            mnozica.append(int(i))
         if len(self.igre) == 0:
             return 0
         else:
-            return len(self.igre.keys()) + 1
+            return max(mnozica) + 1
 
     def udarec(self, id_igre, moc, kot):
         self.nalozi_igre_iz_datoteke()
@@ -206,12 +202,12 @@ class Golf:
         preveri = igra.udarec(moc, kot)
         if preveri == "Vredu":
             self.igre[id_igre] = igra
-            self.zapisi_igre_v_datoteko()  
+            self.zapisi_igre_v_datoteko()
             return "Vredu"
-        else :
+        else:
             self.igre[id_igre] = igra
-            self.zapisi_igre_v_datoteko()  
-            return "Napaka"          
+            self.zapisi_igre_v_datoteko()
+            return "Napaka"
 
     def dodaj_igralca(self, id_igre, ime):
         self.nalozi_igre_iz_datoteke()
@@ -228,7 +224,7 @@ class Golf:
         self.zapisi_igre_v_datoteko()
         return id_igre
 
-    #def zapisi_igre_v_datoteko(self):
+    # def zapisi_igre_v_datoteko(self):
      #   with open(self.datoteka_s_stanjem, "w", encoding="utf-8") as f:
       #      igre = {id_igre: (igra.igralci, igra.runda, igra.pozicija_luknje, igra.igralec_na_vrsti,
        #                       igra.koordinate_zacetka, igra.koncani_igralci) for id_igre, igra in self.igre.items()}
@@ -238,11 +234,11 @@ class Golf:
         igre = {}
         with open(self.datoteka_s_stanjem, "w", encoding="utf-8") as f:
             for id_igre, igra in self.igre.items():
-                igre[id_igre] = (igra.igralci, igra.runda, igra.pozicija_luknje, igra.igralec_na_vrsti,igra.koordinate_zacetka, igra.koncani_igralci)
-            json.dump(igre,f)    
+                igre[id_igre] = (igra.igralci, igra.runda, igra.pozicija_luknje,
+                                 igra.igralec_na_vrsti, igra.koordinate_zacetka, igra.koncani_igralci)
+            json.dump(igre, f)
 
-
-    #def nalozi_igre_iz_datoteke(self):
+    # def nalozi_igre_iz_datoteke(self):
      #   with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as f:
       #      igre = json.load(f)
        #     self.igre = {int(id_igre): (Igra(pozicija_luknje, igralec_na_vrsti, koordinate_zacetka, igralci, koncani_igralci, runda)
@@ -252,22 +248,5 @@ class Golf:
         with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as f:
             igre = json.load(f)
             for id_igre, (igralci, runda, pozicija_luknje, igralec_na_vrsti, koordinate_zacetka, koncani_igralci) in igre.items():
-                self.igre[id_igre] = Igra(pozicija_luknje, igralec_na_vrsti, koordinate_zacetka, igralci, koncani_igralci, runda)
-
-#I = nova_igra()
-#I.dodaj_igralca("Matic")
-#I.dodaj_igralca("Iza")
-#I.dodaj_igralca("Maja")
-#I.dodaj_igralca("Martin")
-#I.dodaj_igralca("Seba")
-#I.dodaj_igralca("Nina")
-#print(I)
-
-#I.udarec(1,0)
-#I.udarec(10,45)
-#I.udarec(10,90)
-#I.udarec(10,135)
-#I.udarec(10,180)
-#I.udarec(10,225)
-#I.udarec(10,270)
-#I.udarec(10,315)
+                self.igre[id_igre] = Igra(
+                    pozicija_luknje, igralec_na_vrsti, koordinate_zacetka, igralci, koncani_igralci, runda)
