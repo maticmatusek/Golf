@@ -247,6 +247,30 @@ class Golf:
     def nalozi_igre_iz_datoteke(self):
         with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as f:
             igre = json.load(f)
-            for id_igre, (igralci, runda, pozicija_luknje, igralec_na_vrsti, koordinate_zacetka, koncani_igralci) in igre.items():
-                self.igre[id_igre] = Igra(
+            for id_igre, (igralci_json, runda_json, pozicija_luknje_json, igralec_na_vrsti_json, koordinate_zacetka_json, koncani_igralci_json) in igre.items():
+                x_koor_luknje = pozicija_luknje_json[0]
+                y_koor_luknje = pozicija_luknje_json[1]
+                pozicija_luknje = x_koor_luknje, y_koor_luknje
+                igralec_na_vrsti = int(igralec_na_vrsti_json)
+                x_koor_zacetka = koordinate_zacetka_json[0]
+                y_koor_zacetka = koordinate_zacetka_json[1]
+                koordinate_zacetka = x_koor_zacetka, y_koor_zacetka
+                igralci = {}
+                for i in igralci_json:
+                    ime = igralci_json[i][0]
+                    x_koor = igralci_json[i][1][0]
+                    y_koor = igralci_json[i][1][1]
+                    koor = x_koor, y_koor
+                    stevilo_udarcev = igralci_json[i][2]
+                    igralci[int(i)]= [ime,koor,stevilo_udarcev]
+                koncani_igralci = koncani_igralci_json
+                runda = int(runda_json)
+                self.igre[int(id_igre)] = Igra(
                     pozicija_luknje, igralec_na_vrsti, koordinate_zacetka, igralci, koncani_igralci, runda)
+
+
+    @staticmethod
+    def nalozi_iz_jsona(ime_datoteke):
+        golf = Golf(ime_datoteke)
+        golf.nalozi_igre_iz_datoteke()
+        return golf

@@ -2,16 +2,16 @@ import bottle
 import model
 SKRIVNOST = "skrivnost je skrivnost"
 
-golf = model.Golf(model.DATOTEKA_S_STANJEM)
 
 
 @bottle.get("/")
 def osnovna_stran():
     return bottle.template("osnovna.html")
 
+
 @bottle.get("/igra")
 def igra_stran():
-    golf.nalozi_igre_iz_datoteke()
+    golf = model.Golf.nalozi_iz_jsona(model.DATOTEKA_S_STANJEM)
     id_igre = int(bottle.request.get_cookie("idigre" , secret=SKRIVNOST).split("e")[1])
     igra = golf.igre[id_igre]
     igralci = igra.igralci
@@ -36,6 +36,7 @@ def izibra_igre():
 
 @bottle.post("/izbrana-igra/1")
 def ena():
+    golf = model.Golf.nalozi_iz_jsona(model.DATOTEKA_S_STANJEM)
     id_igre = golf.nova_igra(1)
     bottle.response.set_cookie("idigre", "idigre{}".format(
         id_igre), path="/", secret=SKRIVNOST)
@@ -44,6 +45,7 @@ def ena():
 
 @bottle.post("/izbrana-igra/2")
 def dva():
+    golf = model.Golf.nalozi_iz_jsona(model.DATOTEKA_S_STANJEM)
     id_igre = golf.nova_igra(2)
     bottle.response.set_cookie("idigre", "idigre{}".format(
         id_igre), path="/", secret=SKRIVNOST)
@@ -52,6 +54,7 @@ def dva():
 
 @bottle.post("/izbrana-igra/3")
 def tri():
+    golf = model.Golf.nalozi_iz_jsona(model.DATOTEKA_S_STANJEM)
     id_igre = golf.nova_igra(3)
     bottle.response.set_cookie("idigre", "idigre{}".format(
         id_igre), path="/", secret=SKRIVNOST)
@@ -60,6 +63,7 @@ def tri():
 
 @bottle.post("/izbrana-igra/4")
 def stiri():
+    golf = model.Golf.nalozi_iz_jsona(model.DATOTEKA_S_STANJEM)
     id_igre = golf.nova_igra(4)
     bottle.response.set_cookie("idigre", "idigre{}".format(
         id_igre), path="/", secret=SKRIVNOST)
@@ -68,6 +72,7 @@ def stiri():
 
 @bottle.post("/izbrana-igra/5")
 def pet():
+    golf = model.Golf.nalozi_iz_jsona(model.DATOTEKA_S_STANJEM)
     id_igre = golf.nova_igra(5)
     bottle.response.set_cookie("idigre", "idigre{}".format(
         id_igre), path="/", secret=SKRIVNOST)
@@ -76,6 +81,7 @@ def pet():
 
 @bottle.post("/izbrana-igra/6")
 def random():
+    golf = model.Golf.nalozi_iz_jsona(model.DATOTEKA_S_STANJEM)
     id_igre = golf.nova_igra()
     bottle.response.set_cookie("idigre", "idigre{}".format(
         id_igre), path="/", secret=SKRIVNOST)
@@ -84,6 +90,7 @@ def random():
 
 @bottle.get("/dodajanje-igralcev/")
 def stran_dodajanja():
+    golf = model.Golf.nalozi_iz_jsona(model.DATOTEKA_S_STANJEM)
     id_igre = int(bottle.request.get_cookie("idigre" , secret=SKRIVNOST).split("e")[1])
     igra = golf.igre[id_igre]
     igralci = igra.igralci
@@ -93,6 +100,7 @@ def stran_dodajanja():
 
 @bottle.post("/dodaj-igralca/")
 def dodaj_igralca():
+    golf = model.Golf.nalozi_iz_jsona(model.DATOTEKA_S_STANJEM)
     ime = bottle.request.forms["ime"]
     id_igre = int(bottle.request.get_cookie("idigre" , secret=SKRIVNOST).split("e")[1])
     imena = []
@@ -117,15 +125,16 @@ def dodaj_igralca():
 
 @bottle.post("/udarec/")
 def udarec():
+    golf = model.Golf.nalozi_iz_jsona(model.DATOTEKA_S_STANJEM)
     id_igre = int(bottle.request.get_cookie("idigre" , secret=SKRIVNOST).split("e")[1])
     moc = int(bottle.request.forms["moc"])
     kot = int(bottle.request.forms["kot"])
     preveri = golf.udarec(id_igre, moc, kot)
     if preveri == "Napaka":
-        bottle.redirect("/izven-meja")
+        bottle.redirect("/izven-meja/")
     bottle.redirect("/igra")    
 
-@bottle.get("/izven-meja")
+@bottle.get("/izven-meja/")
 def izven_meja():
     return bottle.template("izven_meja.html")
 
@@ -135,6 +144,7 @@ def serve_picture(picture):
 
 @bottle.post("/rezultati/")
 def rezultati():
+    golf = model.Golf.nalozi_iz_jsona(model.DATOTEKA_S_STANJEM)
     golf.nalozi_igre_iz_datoteke()
     id_igre = int(bottle.request.get_cookie("idigre" , secret=SKRIVNOST).split("e")[1])
     igra = golf.igre[id_igre]
@@ -143,7 +153,7 @@ def rezultati():
     koncani_igralci = igra.koncani_igralci
     return bottle.template("rezultati.html", igralci = igralci, runda=runda,koncani_igralci=koncani_igralci)
 
-@bottle.get("/navodila")
+@bottle.get("/navodila/")
 def navodila():
     return bottle.template("navodila.html")
 

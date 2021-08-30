@@ -114,20 +114,20 @@
                 <div class="card-content white-text">
                     <span class="card-title">IGRALEC NA VRSTI:</span>
                     % if igralec_na_vrsti == 0 :
-                    <p> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
-                            class="material-icons red-text left">brightness_1</i></p>
+                    <h5> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
+                            class="material-icons red-text left">brightness_1</i></h5>
                     % elif igralec_na_vrsti == 1 :
-                    <p> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
-                            class="material-icons blue-text left">brightness_1</i></p>
+                    <h5> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
+                            class="material-icons blue-text left">brightness_1</i></h5>
                     % elif igralec_na_vrsti == 2 :
-                    <p> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
-                            class="material-icons purple-text left">brightness_1</i></p>
+                    <h5> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
+                            class="material-icons purple-text left">brightness_1</i></h5>
                     % elif igralec_na_vrsti == 3 :
-                    <p> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
-                            class="material-icons yellow-text left">brightness_1</i></p>
+                    <h5> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
+                            class="material-icons yellow-text left">brightness_1</i></h5>
                     % elif igralec_na_vrsti == 4 :
-                    <p> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
-                            class="material-icons brown-text left">brightness_1</i></p>
+                    <h5> <b> {{igralci[igralec_na_vrsti][0]}}</b> <i
+                            class="material-icons brown-text left">brightness_1</i></h5>
                     % end
                 </div>
             </div>
@@ -168,27 +168,27 @@
             % end
 
 
-
+<div style="margin-top: 70px;">
             % if len(koncani_igralci) > 0:
             <form action="/rezultati/" method="POST">
-                <button class="btn-large lime darken-1 waves-effect" type="submit">
+                <button class="btn-large lime darken-1 waves-effect right" type="submit">
                     <h6><b>Končaj igro</b></h6>
                 </button>
             </form>
             % else:
             <form action="/rezultati/" method="POST">
-                <button class="btn-large lime darken-1 waves-effect" type="submit">
+                <button class="btn-large lime darken-1 waves-effect right" type="submit">
                     <h6><b>Predajam se</b></h6>
                 </button>
             </form>
             % end
 
-            <form action="/navodila" method="get">
-                <button class="btn amber waves-effect" type="submit">Navodila
+            <form action="/navodila/" method="get">
+                <button class="btn amber waves-effect left" type="submit">Navodila
                     <i class="material-icons right">help_outline</i>
                 </button>
             </form>
-
+</div>
         </div>
 
         <div class="col l2">
